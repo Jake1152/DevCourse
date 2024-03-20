@@ -1,4 +1,15 @@
 /**
+ * hoisting test
+ */
+console.log(add1(1, 2));
+/** 선언 이전에 호출하면 에러 발생 심지어는 var 포함 */
+// console.log(add2(1, 2)); // error
+// console.log(add3(1, 2)); // error
+// console.log(add4(1, 2)); // error
+
+/**************************************************************************** */
+
+/**
  *
  */
 function add1(x, y) {
