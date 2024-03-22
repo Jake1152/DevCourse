@@ -6,6 +6,9 @@ console.log(add1(1, 2));
 // console.log(add2(1, 2)); // error
 // console.log(add3(1, 2)); // error
 // console.log(add4(1, 2)); // error
+console.log(add4); // error
+
+var add4 = (x, y) => x + y;
 
 /**************************************************************************** */
 
@@ -33,7 +36,6 @@ const add3 = (x, y) => {
 /**
  *
  */
-var add4 = (x, y) => x + y;
 
 console.log(add1(1, 2));
 console.log(add2(1, 2));

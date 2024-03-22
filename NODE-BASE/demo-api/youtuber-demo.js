@@ -34,9 +34,16 @@ app.get("/youtuber/:id", function (req, res) {
   const youtuber = db.get(id);
   if (youtuber === undefined) {
     res.json({
-      message: "유투버 정보를 찾을 수 없습니다.",
+      // message: "유투버 정보를 찾을 수 없습니다.",
+      message: `요청하신 ${id}번은 없는 유투버입니다.`,
     });
   } else {
+    const channelTitle = youtuber.channelTitle;
+    db.delete(id);
     res.json(youtuber);
   }
 });
+
+// some
+{
+}
