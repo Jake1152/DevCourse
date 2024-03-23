@@ -102,18 +102,19 @@ app.delete("/youtubers/:id", (req, res) => {
  * 멱등성이 있다
  */
 app.delete("/youtubers", (req, res) => {
-  try {
-    for (const [key, value] of db) {
-      const name = value.channelTitle;
-      console.log(`name : ${name}`);
-      db.delete(key);
-    }
-    return res.json({
-      message: `모든 유투브 계정이 삭제되었습니다.`,
-    });
-  } catch (err) {
-    return res.json({
-      message: "요청하신 유저는 이미 삭제 되었습다.",
-    });
+  // for (const [key, value] of db) {
+  //   const name = value.channelTitle;
+  //   console.log(`name : ${name}`);
+  //   db.delete(key);
+  // }
+  let msg = "";
+  if (db.size) {
+    db.clear();
+    msg = "모든 유투브 계정이 삭제되었습니다.";
+  } else {
+    msg = "삭제할 유투버가 없습니다.";
   }
+  return res.json({
+    message: msg,
+  });
 });
