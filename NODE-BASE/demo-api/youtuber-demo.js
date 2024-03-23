@@ -3,30 +3,31 @@ const app = express();
 app.listen(4242);
 
 let youtuber1 = {
-  channelTittle: "민음사TV",
+  channelTitle: "민음사TV",
   sub: "20.5만",
   video: "595개",
 };
 
 let youtuber2 = {
-  channelTittle: "별별역사",
+  channelTitle: "별별역사",
   sub: "52.5만",
   video: "146개",
 };
 
 let youtuber3 = {
-  channelTittle: "셜록현준",
+  channelTitle: "셜록현준",
   sub: "121만",
   video: "197개",
 };
 
 let db = new Map();
-db.set(1, youtuber1);
-db.set(2, youtuber2);
-db.set(3, youtuber3);
+let myId = 1;
+db.set(myId++, youtuber1);
+db.set(myId++, youtuber2);
+db.set(myId++, youtuber3);
 
 // REST API 설계
-app.get("/youtuber/:id", function (req, res) {
+app.get("/youtubers/:id", function (req, res) {
   console.log("Get method of /youtuber/:id router");
   let { id } = req.params;
   id = parseInt(id);
@@ -38,9 +39,9 @@ app.get("/youtuber/:id", function (req, res) {
       message: `요청하신 ${id}번은 없는 유투버입니다.`,
     });
   } else {
-    const channelTitle = youtuber.channelTitle;
+    // const channelTitle = youtuber.channelTitle;
     db.delete(id);
-    res.json(youtuber);
+    res.json({ message: "삭제됨." });
   }
 });
 
@@ -68,6 +69,25 @@ app.get("/youtubers", function (req, res) {
   return res.json(youtubers);
 });
 
-// some
-// {
-// }
+app.use(express.json());
+app.post("/youtubers", (req, res) => {
+  console.log(req.body);
+
+  db.set(myId++, req.body);
+
+  res.json({
+    message: `${db.get(myId - 1).channelTitle}님, 유투버 생활을 응원합니다.`,
+  });
+});
+
+app.delete("/youtubers/:id", (req, res) => {
+  let { id } = req.params;
+  id = parseInt(id);
+  // console.log(`id: ${id}`);
+  const name = db.get(id).channelTitle;
+  db.delete(id);
+  return res.json({
+    id: id,
+    message: `${name}님의 유투브 계정이 삭제되었습니다.`,
+  });
+});
