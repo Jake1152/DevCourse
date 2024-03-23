@@ -44,6 +44,30 @@ app.get("/youtuber/:id", function (req, res) {
   }
 });
 
+app.get("/youtubers", function (req, res) {
+  db.forEach((yoububer) => {
+    console.log(yoububer);
+  });
+
+  // for-of way 00
+  for (const youtuber of db) {
+    console.log(`youtuber : `, youtuber);
+  }
+  // for-of way 01 왜 대괄호로 감싸야 하는가?
+  for (const [youtuberKey, youtuberValue] of db) {
+    console.log(youtuberKey, youtuberValue);
+  }
+
+  let youtubers = {};
+  db.forEach((value, key) => {
+    youtubers[key] = value;
+  });
+
+  // console.log(db.set());
+  // console.log(db.values());
+  return res.json(youtubers);
+});
+
 // some
-{
-}
+// {
+// }
