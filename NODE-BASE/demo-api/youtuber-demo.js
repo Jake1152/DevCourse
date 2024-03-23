@@ -83,11 +83,37 @@ app.post("/youtubers", (req, res) => {
 app.delete("/youtubers/:id", (req, res) => {
   let { id } = req.params;
   id = parseInt(id);
-  // console.log(`id: ${id}`);
-  const name = db.get(id).channelTitle;
-  db.delete(id);
-  return res.json({
-    id: id,
-    message: `${name}님의 유투브 계정이 삭제되었습니다.`,
-  });
+  try {
+    const name = db.get(id).channelTitle;
+    db.delete(id);
+    return res.json({
+      id: id,
+      message: `${name}님의 유투브 계정이 삭제되었습니다.`,
+    });
+  } catch (err) {
+    // console.error(err);
+    return res.json({
+      message: "요청하신 유저는 이미 삭제 되었습니다.",
+    });
+  }
+});
+
+/**
+ * 멱등성이 있다
+ */
+app.delete("/youtubers", (req, res) => {
+  try {
+    for (const [key, value] of db) {
+      const name = value.channelTitle;
+      console.log(`name : ${name}`);
+      db.delete(key);
+    }
+    return res.json({
+      message: `모든 유투브 계정이 삭제되었습니다.`,
+    });
+  } catch (err) {
+    return res.json({
+      message: "요청하신 유저는 이미 삭제 되었습다.",
+    });
+  }
 });
