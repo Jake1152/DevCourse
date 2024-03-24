@@ -10,7 +10,7 @@ app.use(express.json());
 
 const arr = [1, 2, 3, 4];
 
-const fruites = [
+const fruits = [
   { id: 1, name: "tomato" },
   { id: 2, name: "apple" },
   { id: 3, name: "watermelon" },
@@ -23,48 +23,59 @@ const fruites = [
 ];
 
 // 과일 전체 조회
-app.get("/fruites", (req, res) => {
+app.get("/fruits", (req, res) => {
   // [,] 같은 정의 앞에 변수선언 키워드를 넣고 않넣고는 등 둘 사이의 차이점은 무엇인가?
-  // for ([value, key] of fruites) {
-  //   let fruitesJSON = {};
-  //   //   for (const fruit of fruites) {
-  //   for (const fruitObject of fruites) {
+  // for ([value, key] of fruits) {
+  //   let fruitsJSON = {};
+  //   //   for (const fruit of fruits) {
+  //   for (const fruitObject of fruits) {
   //     console.log(
   //       `fruit.id : ${fruitObject.id}, fruit.name : ${fruitObject.name}`
   //     );
-  //     fruitesJSON[fruitObject.id] = fruitObject.name;
-  //     // fruitesObject[key] = value;
+  //     fruitsJSON[fruitObject.id] = fruitObject.name;
+  //     // fruitsObject[key] = value;
   //   }
 
-  //   fruites.forEach((fruit) => {
+  //   fruits.forEach((fruit) => {
   //     console.log(`fruit: ${fruit}`);
   //   });
-  //   console.log(`fruitesObject : ${fruitesObject}`);
+  //   console.log(`fruitsObject : ${fruitsObject}`);
 
-  //   res.json(fruitesObject);
-  //   res.send("fruitesObject");
-  //   res.json(fruitesJSON);
-  return res.json(fruites);
+  //   res.json(fruitsObject);
+  //   res.send("fruitsObject");
+  //   res.json(fruitsJSON);
+  return res.json(fruits);
 });
 
 // 과일 개별 조회
-app.get("/fruites/:id", (req, res) => {
+app.get("/fruits/:id", (req, res) => {
   let { id } = req.params;
   id = parseInt(id);
 
-  let fruitName = "";
-  for (const fruitObject of fruites) {
-    // console.log(`fruitObject : `, fruitObject);
-    // console.log(`fruitObject[id] : `, fruitObject[id]);
-    // console.log(`fruitObject.id : `, fruitObject.id);
-    if (fruitObject.id === id) {
-      fruitName = fruitObject.name;
-      return res.json({
-        message: `${fruitName}(을)를 찾았습니다.`,
-      });
-    }
-  }
-  return res.json({
-    message: `찾으시는 과일은 없습니다.`,
-  });
+  //   let fruitName = "";
+  //   # way 00, 하지만  JSON array의 index이므로 object "id"와 다르다
+  //   let fruit = fruits[id];
+  //   res.json(fruit);
+
+  // # way01 for문에서 찾기
+  //   for (const fruitObject of fruits) {
+  //     // console.log(`fruitObject : `, fruitObject);
+  //     // console.log(`fruitObject[id] : `, fruitObject[id]);
+  //     // console.log(`fruitObject.id : `, fruitObject.id);
+  //     if (fruitObject.id === id) {
+  //       fruitName = fruitObject.name;
+  //       return res.json({
+  //         message: `${fruitName}(을)를 찾았습니다.`,
+  //       });
+  //     }
+  //   }
+  //   return res.json({
+  //     message: `찾으시는 과일은 없습니다.`,
+  //   });
+
+  // # way02 find()를 이용해서 한번에 찾기
+  const findFruit = fruits.find((fruitObject) => fruitObject.id === id);
+  if (findFruit) res.json(findFruit);
+  else res.json({ message: "찾으시는 과일이 없습니다." });
+  // # way03 exception 처리
 });
