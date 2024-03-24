@@ -46,18 +46,18 @@ app.get("/youtubers/:id", function (req, res) {
 });
 
 app.get("/youtubers", function (req, res) {
-  db.forEach((yoububer) => {
-    console.log(yoububer);
-  });
+  // db.forEach((yoububer) => {
+  //   console.log(yoububer);
+  // });
 
-  // for-of way 00
-  for (const youtuber of db) {
-    console.log(`youtuber : `, youtuber);
-  }
-  // for-of way 01 왜 대괄호로 감싸야 하는가?
-  for (const [youtuberKey, youtuberValue] of db) {
-    console.log(youtuberKey, youtuberValue);
-  }
+  // // for-of way 00
+  // for (const youtuber of db) {
+  //   console.log(`youtuber : `, youtuber);
+  // }
+  // // for-of way 01 왜 대괄호로 감싸야 하는가?
+  // for (const [youtuberKey, youtuberValue] of db) {
+  //   console.log(youtuberKey, youtuberValue);
+  // }
 
   let youtubers = {};
   db.forEach((value, key) => {
@@ -83,15 +83,15 @@ app.post("/youtubers", (req, res) => {
 app.delete("/youtubers/:id", (req, res) => {
   let { id } = req.params;
   id = parseInt(id);
-  try {
-    const name = db.get(id).channelTitle;
+
+  const youtuber = db.get(id);
+  if (youtuber) {
+    const channelTitle = youtuber.channelTitle;
     db.delete(id);
     return res.json({
-      id: id,
-      message: `${name}님의 유투브 계정이 삭제되었습니다.`,
+      message: `${channelTitle}님의 유투브 계정이 삭제되었습니다.`,
     });
-  } catch (err) {
-    // console.error(err);
+  } else {
     return res.json({
       message: "요청하신 유저는 이미 삭제 되었습니다.",
     });
@@ -116,5 +116,26 @@ app.delete("/youtubers", (req, res) => {
   }
   return res.json({
     message: msg,
+  });
+});
+
+app.put("/youtubers/:id", (req, res) => {
+  let { id } = req.params;
+  id = +id;
+
+  const youtuber = db.get(id);
+  const prevChannelTitle = youtuber.channelTitle;
+
+  if (!youtuber) {
+    res.status(404).json({ error: "Youtuber not found" });
+    return;
+  }
+
+  const newChannelTitle = req.body.channelTitle;
+  youtuber.channelTitle = newChannelTitle;
+  db.set(id, youtuber);
+
+  res.json({
+    message: `${prevChannelTitle}님, 채널명이 ${newChannelTitle}으로 변경되었습니다.`,
   });
 });
