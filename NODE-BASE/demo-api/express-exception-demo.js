@@ -74,8 +74,16 @@ app.get("/fruits/:id", (req, res) => {
   //   });
 
   // # way02 find()를 이용해서 한번에 찾기
-  const findFruit = fruits.find((fruitObject) => fruitObject.id === id);
-  if (findFruit) res.json(findFruit);
-  else res.json({ message: "찾으시는 과일이 없습니다." });
+  /**
+   * Array 인스턴스의 find() 메서드는 제공된 배열에서 조건에 만족하는 첫 번째 요소를 반환한다.
+   * 만족하는 값이 없으면 undefined가 반환된다.
+   * fruitObject.id === id 라면 조건이 만족하므로 fruitObject 가 반환된다.
+   */
+  const findFruit = fruits.find((fruitObject) => {
+    return fruitObject.id === id;
+  });
   // # way03 exception 처리
+  if (findFruit) res.status(200).json(findFruit);
+  else res.status(404).send("찾으시는 id로 저장된 과일이 없습니다.");
+  //   else res.status(404).json({ message: "찾으시는 과일이 없습니다." });
 });
