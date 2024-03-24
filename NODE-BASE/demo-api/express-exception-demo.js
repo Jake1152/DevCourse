@@ -26,15 +26,15 @@ const fruites = [
 app.get("/fruites", (req, res) => {
   // [,] 같은 정의 앞에 변수선언 키워드를 넣고 않넣고는 등 둘 사이의 차이점은 무엇인가?
   // for ([value, key] of fruites) {
-  let fruitesJSON = {};
-  //   for (const fruit of fruites) {
-  for (const fruitObject of fruites) {
-    console.log(
-      `fruit.id : ${fruitObject.id}, fruit.name : ${fruitObject.name}`
-    );
-    fruitesJSON[fruitObject.id] = fruitObject.name;
-    // fruitesObject[key] = value;
-  }
+  //   let fruitesJSON = {};
+  //   //   for (const fruit of fruites) {
+  //   for (const fruitObject of fruites) {
+  //     console.log(
+  //       `fruit.id : ${fruitObject.id}, fruit.name : ${fruitObject.name}`
+  //     );
+  //     fruitesJSON[fruitObject.id] = fruitObject.name;
+  //     // fruitesObject[key] = value;
+  //   }
 
   //   fruites.forEach((fruit) => {
   //     console.log(`fruit: ${fruit}`);
@@ -43,7 +43,8 @@ app.get("/fruites", (req, res) => {
 
   //   res.json(fruitesObject);
   //   res.send("fruitesObject");
-  res.json(fruitesJSON);
+  //   res.json(fruitesJSON);
+  return res.json(fruites);
 });
 
 // 과일 개별 조회
