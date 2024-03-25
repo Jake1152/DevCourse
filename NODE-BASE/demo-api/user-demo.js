@@ -24,7 +24,7 @@ app.post("/login", (req, res) => {
       console.log("같은 거 찾았어");
     }
   }
-  res.status(200).json(req.body);
+  return res.status(200).json(req.body);
 });
 
 // join
@@ -49,7 +49,7 @@ app.post("/join", (req, res) => {
     msg = `${db.get(myId - 1).name}님 환영합니다.`;
   }
 
-  res.status(statusCode).json({
+  return res.status(statusCode).json({
     message: msg,
   });
 });
