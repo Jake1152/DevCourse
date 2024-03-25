@@ -17,14 +17,66 @@ app.use(express.json());
 app.post("/login", (req, res) => {
   console.log(req.body);
 
-  const { userId } = req.body;
-  console.log(`userId : ${userId}`);
-  for (const [user, id] of db) {
+  const { userId, password } = req.body;
+  // console.log(`userId : ${userId}`);
+  // for (const [user, id] of db) {
+  //   if (user.userId === userId) {
+  //     console.log("같은 거 찾았어");
+  //   }
+  // }
+  let loginUser = {};
+
+  // db.forEach((user, id) => {
+  //   if (user.userId === userId) {
+  //     loginUser = user;
+  //   }
+  // });
+  // for (const [key, user, objects] of db) { // objects 같은 것은 없다
+  // for (const [key, user] of db) {
+  // for (const [key, user] of db.entries()) {
+
+  // for (const key of db.keys()) {
+  //   // console.log("user : ", user);
+  //   console.log("key : ", key);
+  //   // console.log("objects : ", objects);
+  //   // if (user.userId === userId) {
+  //   console.log("db.get(key) : ", db.get(key));
+  //   console.log("db.get(key).userId : ", db.get(key).userId);
+  //   if (db.get(key).userId === userId) {
+  //     // if (user.userId === userId) {
+  //     loginUser = db.get(key);
+  //   }
+  // }
+
+  // keys()나 entries()가 아니라면 index 1이 값이 들어있는 부분
+  // 그런데 왜 인덱스 1이어야 하는가?, object에 어떤 부분이 연관되는가?
+  for (const obj of db) {
+    // console.log("user : ", user);
+    const user = obj[1];
+    console.log("user : ", user);
+    // console.log("objects : ", objects);
     if (user.userId === userId) {
-      console.log("같은 거 찾았어");
+      // console.log("db.get(user) : ", db.get(key));
+      // console.log("db.get(key).userId : ", db.get(key).userId);
+      // if (db.get(key).userId === userId) {
+      // if (user.userId === userId) {
+      loginUser = user;
     }
   }
-  return res.status(200).json(req.body);
+
+  if (Object.keys(loginUser).length > 0) {
+    console.log("같은 유저를 찾았다.");
+    // pwd 일치여부 확인
+    if (loginUser.password === password) {
+      console.log("패스워드 일치");
+    } else {
+      console.log("아이디 또는 패스워드 정보가 일치하지 않습니다.");
+    }
+    return res.status(200).json(req.body);
+  } else {
+    console.log("입력하신 아이디는 없는 아이디 입니다.");
+    return res.status(400).json("Bad request");
+  }
 });
 
 // join
