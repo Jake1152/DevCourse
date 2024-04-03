@@ -1,4 +1,5 @@
-const express = require("express");
+// const express = require("express");
+const router = require("./user-demo").router;
 const statusCode = require("http-status-codes");
 const app = express();
 

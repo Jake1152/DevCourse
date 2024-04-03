@@ -1,20 +1,16 @@
 const express = require("express");
 // const { StatusCodes } = require("http-status-codes");
-const app = express();
-const port = 7777;
-app.listen(process.env.PORT || port, () => {
-  console.log(`Server is started on ${port}`);
-});
+const router = express().Router();
 
 let db = new Map();
 let myId = 1;
 
 // db.set(myId++, {"userId" : })
 
-app.use(express.json());
+router.use(express.json()).Router();
 
 // login
-app.post("/login", (req, res) => {
+router.post("/login", (req, res) => .Router(){
   console.log(req.body);
 
   const { userId, password } = req.body;
@@ -124,6 +120,21 @@ app.get("/users/:id", (req, res) => {
   return res.status(200).send({ message: msg });
 });
 
+app.delete("/users/:id", (req, res) => {
+  let msg = "";
+
+  let { id } = req.params;
+  id = parseInt(id);
+
+  if (db.get(id)) {
+    msg = `${db.get(id).name} 님 탈퇴 되셨습니다.`;
+    db.delete(id);
+  } else {
+    msg = `회원가입 되지 않은 정보입니다.`;
+  }
+  return res.status(200).json({ message: msg });
+});
+
 // 전체유저 목록 반환
 // app.get("/users", (req, res) => {
 //   console.log(`db : `, db);
@@ -143,17 +154,4 @@ app.get("/users/:id", (req, res) => {
 //   return res.status(200).json(users);
 // });
 
-app.delete("/users/:id", (req, res) => {
-  let msg = "";
-
-  let { id } = req.params;
-  id = parseInt(id);
-
-  if (db.get(id)) {
-    msg = `${db.get(id).name} 님 탈퇴 되셨습니다.`;
-    db.delete(id);
-  } else {
-    msg = `회원가입 되지 않은 정보입니다.`;
-  }
-  return res.status(200).json({ message: msg });
-});
+module.exports = router;
