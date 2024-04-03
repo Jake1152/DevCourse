@@ -91,6 +91,7 @@ app.post("/join", (req, res) => {
   // == {}이면 === {} 일때와 무엇이 다른가? 둘다 false가 나온다. 의도대로 동작하지 않는 코드이다.
   // if (req.body == {}) {
   // if (!req.body) {
+  // if (req.body === {}) {
   if (Object.keys(req.body).length === 0) {
     statusCode = 400;
     msg = `회원정보를 입력해주세요.`;
