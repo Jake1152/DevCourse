@@ -4,8 +4,8 @@ VALUES
 ("jim@gmail.com", "jim", "3333", "001-2224-9999");
 
 
-INSERT INTO channels (name, users_id) 
+INSERT INTO channels (name, user_id) 
 VALUES 
-("jim000", "jim@gmail.com", 3),
-("rancho", "rancho@gmail.com", 2);
+("jim000", 3), 
+("rancho", 2);
 

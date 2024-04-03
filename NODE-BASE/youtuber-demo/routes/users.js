@@ -1,19 +1,14 @@
-// const { StatusCodes } = require("http-status-codes");
 const express = require("express");
 const router = express.Router();
-// const mariadb =
 const connection = require("../mariadb");
 
-// A simple SELECT query
-connection.query("SELECT * FROM `users`", (err, results, fields) => {
-  const { id, email, name, created_at } = results[0];
-  console.log(`id : ${id}`);
-  console.log(`email : ${email}`);
-  console.log(`name : ${name}`);
-  console.log(`created_at : ${created_at}`);
-  console.log(`fields : ${fields}`);
-});
-
+// const isExistObject = require("../utils/util");
+// import isExistObject from "../utils/util";
+const isExistObject = (obj) => {
+  // console.log("Object.keys(obj).length : ", Object.keys(obj).length);
+  if (Object.keys(obj).length === 0) return false;
+  return true;
+};
 // req body parse
 router.use(express.json());
 
@@ -29,69 +24,99 @@ const isExist = (obj) => {
 router
   .route("/users")
   .get((req, res) => {
-    const { userId } = req.body;
+    const { email } = req.body;
 
-    const user = db.get(userId);
-    if (db.has(userId)) {
-      return res.status(200).json({
-        userId: user.userId,
-        name: user.name,
+    let sql = `SELECT * FROM users WHERE email = ?`;
+
+    try {
+      connection.query(sql, email, (err, results) => {
+        // if (loginUser && isExistObject(loginUser)) { // undefined가 넘어오기에 {}인지 확인할 필요 없다.
+        if (results && isExistObject(results)) {
+          return res.status(200).json(results);
+        } else {
+          return res.status(404).json({
+            message: "그런 유저는 없습니다.",
+          });
+        }
       });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Server Error" });
     }
-    return res.status(404).json({ message: "없는 회원입니다." });
   })
   .delete((req, res) => {
-    let { userId } = req.body;
+    const { email } = req.body;
 
-    const user = db.get(userId);
-    if (db.has(userId)) {
-      db.delete(userId);
-      return res
-        .status(200)
-        .json({ message: `${user.name}님 탈퇴되었습니다.` });
+    const sql = `DELETE FROM users WHERE email ?`;
+
+    try {
+      connection.query(sql, email, (err, results) => {
+        // if (loginUser && isExistObject(loginUser)) { // undefined가 넘어오기에 {}인지 확인할 필요 없다.
+        if (results && isExistObject(results)) {
+          return res.status(200).json(results);
+        } else {
+          return res.status(404).json({
+            message: "그런 유저는 없습니다.",
+          });
+        }
+      });
+    } catch (err) {
+      return res.status(500).json({ message: "Server Error" });
     }
-    return res.status(404).json({ message: "없는 회원입니다." });
   });
 
 // login
 router.post("/login", (req, res) => {
-  console.log(`req.body : `, req.body);
+  const { email, password } = req.body;
+  let query = `SELECT * FROM users WHERE email = ?`;
 
-  const { userId, password } = req.body;
-  let loginUser = {};
+  try {
+    connection.query(query, email, (err, results, fields) => {
+      const loginUser = results[0];
 
-  db.forEach((user, idx) => {
-    if (user.userId === userId) {
-      loginUser = { ...user };
-      console.log(`loginUser : `, loginUser);
-    }
-  });
-
-  if (isExist(loginUser)) {
-    if (loginUser.password === password) {
-      return res
-        .status(200)
-        .json({ message: `${loginUser.name}님 환영합니다.` });
-    }
-    return res.status(400).json({ message: "비밀번호가 틀렸습니다." });
-  } else {
-    return res.status(404).json({ message: "없는 아이디입니다." });
+      if (
+        loginUser &&
+        isExistObject(loginUser) &&
+        loginUser.password === password
+      ) {
+        res.status(200).json({
+          message: `${loginUser.name}님 로그인 되었습니다.`,
+        });
+      } else {
+        res.status(404).json({
+          message: "아이디 또는 비밀번호가 일치하지 않습니다.",
+        });
+      }
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server error.");
   }
 });
 
 // join
 router.post("/join", (req, res) => {
-  console.log(`req.body : `, req.body);
+  const { email, name, password, contact } = req.body;
 
-  if (req.body.name && req.body.userId && req.body.password) {
-    const { userId } = req.body;
-    db.set(userId, req.body);
-
-    return res
-      .status(201)
-      .json({ message: `${db.get(userId).name}님 환영합니다.` });
+  // INSERT INTO users (email, name, password, contact) VALUES ("j42@gmail.com", "jinho", "1111", "gmail");
+  let sql = `INSERT INTO users (email, name, password, contact) VALUES (?, ?, ?, ?)`;
+  if (!email || !name || !password || !contact) {
+    return res.status(400).json({ message: "정보를 제대로 입력해주세요." });
   }
-  return res.status(400).json({ message: "정보를 제대로 입력해주세요." });
+  let values = [email, name, password, contact];
+  console.log("values : ", values);
+  try {
+    connection.query(sql, values, (err, results) => {
+      console.log("results : ", results);
+      if (results && isExistObject(results)) {
+        return res.status(200).json(results);
+      } else {
+        return res.status(400).json({ message: "이미 가입된 회원입니다." });
+      }
+    });
+  } catch (err) {
+    return res.status(500).json({ message: "Server Error." });
+  }
 });
 
 module.exports = router;
