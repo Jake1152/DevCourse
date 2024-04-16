@@ -13,19 +13,18 @@ CREATE TABLE category (
     name VARCHAR(255) NOT NULL
 );
 
-
 -- index는 예약어
 CREATE TABLE books (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     category_id INT NOT NULL,
-    format VARCHAR(50) NOT NULL,
+    form VARCHAR(50) NOT NULL,
     isbn VARCHAR(20) UNIQUE NOT NULL,
     summary TEXT,
-    description TEXT,
+    detail TEXT,
     author VARCHAR(255) DEFAULT 'unknown' NOT NULL,
     pages INT NOT NULL,
-    index_ VARCHAR(255) NOT NULL,
+    contents VARCHAR(255) NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     likes INT DEFAULT 0 NOT NULL,
     pub_date DATE NOT NULL,
