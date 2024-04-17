@@ -8,17 +8,12 @@ ALTER TABLE books
 RENAME COLUMN index_ to contents;
 
 
-ALTER TABLE books 
-DROP FOREIGN  category_id;
 
--- 중요, 이미 생성된 테이블과 같은 테이블을 만들 수 있는 query 제공
+-- !!중요, 이미 생성된 테이블과 같은 테이블을 만들 수 있는 query 제공
 SHOW CREATE TABLE books;
 
 ALTER TABLE books DROP FOREIGN KEY `books_ibfk_1`;
-ALTER TABLE books DROP FOREIGN KEY category_id;
 
 ALTER TABLE books DROP COLUMN category_id;
-
-
 
 ALTER TABLE users RENAME COLUMN username to email;

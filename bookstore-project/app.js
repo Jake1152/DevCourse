@@ -3,20 +3,16 @@ const dotenv = require("dotenv");
 
 const app = express();
 
-const mainController = require("./controllers/main.controllers");
-const usersController = require("./controllers/UserControllers");
+const users = require("./routes/users");
+const books = require("./routes/books");
 
 dotenv.config();
 const port = process.env.PORT || 4242;
 
 app.use(express.json());
 
-app.use("/", mainController);
-app.use("/user", usersController);
-
-// app.get("/", (req, res) => {
-//   return res.status(200).json({ message: "OK" });
-// });
+app.use("/user", users);
+app.use("/book", books);
 
 app.listen(process.env.PORT || port, () => {
   console.log(`Server is started on ${port}`);
