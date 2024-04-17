@@ -26,3 +26,34 @@ INSERT INTO category (id, name) VALUES
 (2, '자기계발'),
 (3, '역사');
 
+-- 17APR24 category_id FK to books table 
+ALTER TABLE books ADD COLUMN img VARCHAR(255) AFTER title;
+ALTER TABLE books ADD COLUMN category_id INT(11) AFTER img;
+
+-- category_id가 아예 테이블에 컬럼으로 없던 경우
+ALTER TABLE books
+ADD COLUMN category_id INT(11) NOT NULL,
+ADD FOREIGN KEY (category_id) REFERENCES category(id);
+
+
+-- category_id가 테이블에 컬럼으로 있지만, 외래키 제약조건이 걸려있지 않은 경우
+ALTER TABLE books
+ADD CONSTRAINT fk_category_id
+FOREIGN KEY (category_id) REFERENCES category(id);
+
+ALTER TABLE `bookstore`.`books`
+ADD INDEX category_id_idx(`category_id` ASC) VISIBLE;
+
+ALTER TABLE `bookstore`.`books`
+ADD CONSTRAINT `category_id`
+    FOREIGN KEY (`category_id`)
+    REFERENCES `bookstore`.`category` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION;
+
+-- book, category table join
+
+SELECT * 
+FROM books 
+LEFT JOIN category 
+ON books.category_id = category_id;
