@@ -17,3 +17,12 @@ ALTER TABLE books DROP FOREIGN KEY `books_ibfk_1`;
 ALTER TABLE books DROP COLUMN category_id;
 
 ALTER TABLE users RENAME COLUMN username to email;
+
+-- remove auto_increment 조건
+ALTER TABLE category  MODIFY id INT(11) NOT NULL;
+
+INSERT INTO category (id, name) VALUES
+(1, '소설'),
+(2, '자기계발'),
+(3, '역사');
+
