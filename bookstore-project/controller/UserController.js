@@ -67,19 +67,19 @@ const validate = (req, res, next) => {
 // });
 
 const join = (req, res) => {
-  // const { email, password } = req.body;
+  const { email, password } = req.body;
 
-  // const sql = `INSERT INTO users (email, password) VALUES (${email}, ${password})`;
-  // let values = [email, password];
+  const sql = `INSERT INTO users (email, password) VALUES (${email}, ${password})`;
+  let values = [email, password];
 
-  // conn.query(sql, values, (err, resulst) => {
-  //   if (err) {
-  //     console.log(err);
-  //     return res.status(StatusCodes.BAD_REQUEST);
-  //   }
+  conn.query(sql, values, (err, resulst) => {
+    if (err) {
+      console.log(err);
+      return res.status(StatusCodes.BAD_REQUEST).json({});
+    }
 
-  return res.status(StatusCodes.CREATED);
-  // });
+    return res.status(StatusCodes.CREATED).json({ email });
+  });
 };
 
 module.exports = { join };

@@ -60,9 +60,7 @@ ON books.category_id = category_id;
 
 
 -- # 18APR24 likes table add column
-ALTER TABLE `bookstore`,`likes`
-
----- gemini
+---- gemini, OCR
 
 ALTER TABLE `bookstore`.`likes`
 ADD INDEX `user_id_idx` (`user_id` ASC) VISIBLE,
