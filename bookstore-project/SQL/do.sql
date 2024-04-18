@@ -26,7 +26,7 @@ INSERT INTO category (id, name) VALUES
 (2, '자기계발'),
 (3, '역사');
 
--- 17APR24 category_id FK to books table 
+-- # 17APR24 category_id FK to books table 
 ALTER TABLE books ADD COLUMN img VARCHAR(255) AFTER title;
 ALTER TABLE books ADD COLUMN category_id INT(11) AFTER img;
 
@@ -57,3 +57,40 @@ SELECT *
 FROM books 
 LEFT JOIN category 
 ON books.category_id = category_id;
+
+
+-- # 18APR24 likes table add column
+ALTER TABLE `bookstore`,`likes`
+
+---- gemini
+
+ALTER TABLE `bookstore`.`likes`
+ADD INDEX `user_id_idx` (`user_id` ASC) VISIBLE,
+ADD INDEX `liked_book_id_idx` (`liked_book_id` ASC) VISIBLE;
+
+ALTER TABLE `bookstore`.`likes`
+ADD CONSTRAINT `user_id`
+  FOREIGN KEY (`user_id`)
+  REFERENCES `bookstore`.`users` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION,
+
+ADD CONSTRAINT `liked_book_id`
+  FOREIGN KEY (`liked_book_id`)
+  REFERENCES `bookstore`.`books` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+-- mysqldump 실패
+-- SELECT concat('RENAME TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' TO ','Bookshop.',TABLE_NAME,';')
+-- FROM information_schema.tables
+-- WHERE TABLE_SCHEMA LIKE 'bookstore';
+
+-- SELECT concat('RENAME TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' TO ','bookstore',TABLE_NAME,';')
+-- FROM information_schema.tables
+-- WHERE TABLE_SCHEMA LIKE 'Bookshop';
+
+-- mariadb-dump -uroot -p bookstore > bookstore.sql
+
+INSERT INTO likes (user_id, liked_book_id) VALUES (1, 1);
+

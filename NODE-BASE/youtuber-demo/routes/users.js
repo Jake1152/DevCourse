@@ -11,6 +11,7 @@ dotenv.config();
 // req body parse
 router.use(express.json());
 
+// validationResult(req) 함수를 호출하여 요청의 유효성을 검사하고, 오류가 발생하면 해당 오류를 JSON 형식으로 클라이언트에게 반환합니다.
 const validate = (req, res) => {
   const err = validationResult(req);
 
