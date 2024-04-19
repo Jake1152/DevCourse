@@ -92,3 +92,30 @@ ADD CONSTRAINT `liked_book_id`
 
 INSERT INTO likes (user_id, liked_book_id) VALUES (1, 1);
 
+-- # 19APR24
+
+-- cartItmes
+ALTER TABLE `bookstore`.`cartItems`
+ADD INDEX `book_id_idx` (`book_id` ASC) VISIBLE;
+
+ALTER TABLE `bookstore`.`cartItems`
+ADD INDEX `user_id_idx` (`user_id` ASC) VISIBLE;
+
+ALTER TABLE `bookstore`.`cartItems`
+ADD CONSTRAINT `book_id`
+FOREIGN KEY (`book_id`)
+REFERENCES `bookstore`.`books` (`id`)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
+
+-- 에러 발생
+ALTER TABLE `bookstore`.`cartItems`
+ADD CONSTRAINT `user_id`
+FOREIGN KEY (`user_id`)
+REFERENCES `bookstore`.`users` (`id`)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
+
+-- 
+ALTER TABLE `bookstore`.`cartItems`
+ADD UNIQUE (`user_id`);
