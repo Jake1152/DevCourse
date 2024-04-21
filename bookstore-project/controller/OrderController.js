@@ -6,34 +6,33 @@ const order = (req, res) => {
   const { items, delivery, totalQuantity, totalPrice, userId, firstBookTitle } =
     req.body;
 
-  // const delivery_id = 3;
-  // const sql = "INSERT INTO delivery (address, receiver, con VALUES(?, ?, ?)";
-  // const values = [
-  //   firstBookTitle,
-  //   totalQuantity,
-  //   totalPrice,
-  //   userId,
-  //   delivery_id,
-  // ];
-  // conn.query(sql, values, (err, results) => {
-  //   if (err) {
-  //     return res
-  //       .status(StatusCodes.BAD_REQUEST)
-  //       .json({ message: "잘못된 요청입니다." });
-  //   }
-  //   return res.status(StatusCodes.CREATED).json(results);
-  // });
-  const delivery_id = 3;
-  const sql =
+  let delivery_id;
+  let order_id;
+  let sql = "INSERT INTO delivery (address, receiver, con VALUES(?, ?, ?)";
+  let values = [firstBookTitle, totalQuantity, totalPrice, userId, delivery_id];
+  conn.query(sql, values, (err, results) => {
+    if (err) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: "잘못된 요청입니다." });
+    }
+    return res.status(StatusCodes.CREATED).json(results);
+  });
+  let [results] = await conn.query(sql, values, (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(StatusCodes.BAD_REQUEST).end();
+    }
+
+    delivery_id = results.insertIdl
+    console.log("results.insertId : ", results.insertId);
+    console.log("conn.query - delivery_id : ", delivery_id);
+  })
+
+  sql =
     "INSERT INTO orders (book_title, total_quantity, total_price, user_id, delivery_id) VALUES (?, ?, ?, ?, ?)";
 
-  const values = [
-    firstBookTitle,
-    totalQuantity,
-    totalPrice,
-    userId,
-    delivery_id,
-  ];
+  values = [firstBookTitle, totalQuantity, totalPrice, userId, delivery_id];
   conn.query(sql, values, (err, results) => {
     if (err) {
       return res
