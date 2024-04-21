@@ -96,6 +96,16 @@ INSERT INTO likes (user_id, liked_book_id) VALUES (1, 1);
 
 -- cartItmes
 ALTER TABLE `bookstore`.`cartItems`
+ADD COLUMN user_id INT(11) AFTER count;
+
+ALTER TABLE `bookstore`.`cartItems`
+RENAME COLUMN bookId to book_id;
+
+ALTER TABLE `bookstore`.`cartItems`
+RENAME COLUMN count to num;
+
+
+ALTER TABLE `bookstore`.`cartItems`
 ADD INDEX `book_id_idx` (`book_id` ASC) VISIBLE;
 
 ALTER TABLE `bookstore`.`cartItems`
@@ -116,6 +126,26 @@ REFERENCES `bookstore`.`users` (`id`)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
--- 
 ALTER TABLE `bookstore`.`cartItems`
 ADD UNIQUE (`user_id`);
+
+-- 아래 케이스들 중 하나 처리
+---- case 1
+ALTER TABLE `bookstore`.`cartItems`
+ADD CONSTRAINT `fk_user_id`
+FOREIGN KEY (`user_id`)
+REFERENCES `bookstore`.`users` (`id`)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
+
+---- case 2
+ALTER TABLE `bookstore`.`cartItems`
+DROP FOREIGN KEY `user_id`;
+
+ALTER TABLE `bookstore`.`cartItems`
+ADD CONSTRAINT `user_id`
+FOREIGN KEY (`user_id`)
+REFERENCES `bookstore`.`users` (`id`)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
+
