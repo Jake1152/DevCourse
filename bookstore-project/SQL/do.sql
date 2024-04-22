@@ -149,3 +149,14 @@ REFERENCES `bookstore`.`users` (`id`)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
+
+-- # 22APR24
+
+-- cartItems;
+ALTER TABLE cartItems RENAME COLUMN num to quantity;
+
+SELECT cartItems.id, book_id, title, summary, quantity, price \
+              FROM cartItems LEFT JOIN books \
+              On cartItems.book_id = books.id
+
+

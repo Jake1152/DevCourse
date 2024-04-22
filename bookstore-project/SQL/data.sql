@@ -57,6 +57,9 @@ DELETE FROM likes WHERE user_id = 1 AND liked_book_id = 3;
 
 // 장바구니 담기
 INSERT INTO cartItems (book_id, quantity, user_id) VALUES (1, 1, 1);
+INSERT INTO cartItems (book_id, quantity, user_id) VALUES (1, 1, 2);
+INSERT INTO cartItems (book_id, quantity, user_id) VALUES (1, 1, 3);
+
 
 // 장바구니 아이템 목록 조회
 SELECT cartItems.id, book_id, title, summary, quantity, price 
@@ -67,7 +70,7 @@ ON cartItems.book_id = books.id;
 DELETE FROM cartItems WHERE id = ?;
 
 // 장바구니에서 선택한(장바구니 도서 id) 아이템 목록 조회 (=선택한 장바구니 상품 목록 조회)
-SELECT * FROM Bookshop.cartItems WHERE user_id=1 AND id IN (1,3)
+SELECT * FROM bookstore.cartItems WHERE user_id=1 AND id IN (1,3)
 
 
 // 주문하기
@@ -87,7 +90,7 @@ INSERT INTO orderedBook (order_id, book_id, quantity)
 VALUES (order_id, 3, 2);
 
 
-SELECT max(id) FROM Bookshop.orderedBook;
+SELECT max(id) FROM bookstore.orderedBook;
 SELECT last_insert_id();
 
 // 결제된 도서 장바구니 삭제e
