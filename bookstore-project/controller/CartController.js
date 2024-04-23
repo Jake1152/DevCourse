@@ -25,22 +25,32 @@ const getCartItems = (req, res) => {
 
   console.log(user_id, selected);
 
-  const sql = `SELECT cartItems.id, book_id, title, summary, quantity, price \
-              FROM cartItems 
-              LEFT JOIN books
-              ON cartItems.book_id = books.id
-              WHERE user_id=? AND cartItems.id IN (?)`;
-  const values = [user_id, selected];
+  const authorization = ensureAuthorization(req, res);
+  // return 된 값이 auth에 들어옴 에러 발생함
+  // response를 두번 발생시키게 됨
 
-  conn.query(sql, values, (err, results) => {
-    if (err) {
-      return res
-        .status(StatusCodes.BAD_REQUEST)
-        .json({ message: "잘못된 요청입니다." });
-    }
+  if (authorization instanceof TokenExpiredError) {
+    return res.status(StatusCodes.UNAUTHORIZED).json({
+      message: "로그이 세션이 만료되었습니다. 다시 로그인 하세요.",
+    });
+  } else {
+    const sql = `SELECT cartItems.id, book_id, title, summary, quantity, price \
+    FROM cartItems 
+    LEFT JOIN books
+    ON cartItems.book_id = books.id
+    WHERE user_id=? AND cartItems.id IN (?)`;
+    const values = [authorization.id, selected];
 
-    return res.status(StatusCodes.OK).json(results);
-  });
+    conn.query(sql, values, (err, results) => {
+      if (err) {
+        return res
+          .status(StatusCodes.BAD_REQUEST)
+          .json({ message: "잘못된 요청입니다." });
+      }
+
+      return res.status(StatusCodes.OK).json(results);
+    });
+  }
 };
 
 // 임진호
@@ -55,9 +65,27 @@ const removeCartItems = (req, res) => {
         .status(StatusCodes.BAD_REQUEST)
         .json({ message: "잘못된 요청입니다." });
     }
-
     return res.status(StatusCodes.CREATED).json(results);
   });
+};
+
+const ensureAuthorization = (req, ㄱㄷㄴ) => {
+  try {
+    let receivedJwt = req.headers["authorization"];
+    console.log("received jwt : ", receivedJwt);
+
+    let decodedJwt = jwt.verify(receivedJwt, process.PRIVATE_KEY);
+    console.log(decodedJwt);
+
+    return decodedJwt;
+  } catch (err) {
+    console.error(err);
+
+    // return res.status(StatusCodes.UNAUTHORIZED).json({
+    //   message: "로그이 세션이 만료되었습니다. 다시 로그인 하세요.",
+    // });
+    return err;
+  }
 };
 
 module.exports = { addToCart, getCartItems, removeCartItems };

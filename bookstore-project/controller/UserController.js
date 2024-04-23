@@ -1,4 +1,5 @@
 const { StatusCodes } = require("http-status-codes");
+const crypto = require("crypto");
 const conn = require("../mariadb");
 const { body, validationResult } = require("express-validator");
 
@@ -82,5 +83,46 @@ const join = (req, res) => {
   });
 };
 
-module.exports = { join };
+const login = (req, res) => {
+  const { email, password } = req.body;
+
+  const sql = `SELECT * FROM users WHERE email = ?`;
+
+  conn.query(sql, email, (err, resulst) => {
+    if (err) {
+      console.log(err);
+      return res.status(StatusCodes.BAD_REQUEST).json({});
+    }
+
+    const loginUser = results[0];
+
+    // salt 값 꺼내서 raw하게 있는 비번 암호화
+    const hashPassword = crypto.pbkdf2Sync(password, loginUser);
+
+    // DB pwd와 비교
+    if (loginUser && loginUser.password === hashPassword) {
+      const token = jwt.sign(
+        {
+          email: loginUser.email,
+        },
+        prcoess.env.PRIVATE_KEY,
+        {
+          expiresIn: "5m",
+          issuer: "Jinho",
+        }
+      );
+
+      // 토큰 쿠키에 저장
+      res.cookie("token", token, {
+        httpOnly: true,
+      });
+      console.log("token : ", token);
+
+      return res.status(StatusCodes.OK).json(results);
+    }
+    return res.status(StatusCodes.CREATED).json({ email });
+  });
+};
+
+module.exports = { join, login };
 // 임진호
