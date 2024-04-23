@@ -22,6 +22,9 @@ const order = async (req, res) => {
 
   delivery_id = results.insertIdl;
 
+  // SELECT book_id, quantity FROM cartItems WHERE IN [1,2,3];
+  // order_id
+
   sql =
     "INSERT INTO orders (book_title, total_quantity, total_price, user_id, delivery_id) VALUES (?, ?, ?, ?, ?)";
 

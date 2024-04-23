@@ -5,24 +5,35 @@ const conn = require("../mariadb");
 const allBooks = (req, res) => {
   let { category_id, news, limit, currentPage } = req.query;
 
+  console.log("category_id : ", category_id);
+  console.log("news : ", news);
+  console.log("limit : ", limit);
+  console.log("currentPage : ", currentPage);
+
   let offset = limit * (currentPage - 1);
 
-  let sql = "SELECT * FROM books LIMIT ? OFFSET ?";
-  let values = [limit, offset];
+  console.log("offset : ", offset);
+
+  let sql = "SELECT * FROM books";
+  let values = [];
 
   if (category_id && news) {
     sql +=
-      " WHERE category_id=? AND pub_date BETWEEN DATE_SUB(NOW(), INTERVAL 1 MONTH) AND NOW()";
-    values = values.push([category_id, news]);
+      " WHERE category_id=? AND pub_date BETWEEN DATE_SUB(NOW(), INTERVAL 12 MONTH) AND NOW()";
+    values = [category_id];
   } else if (category_id) {
     sql += " WHERE category_id=?";
-    values = category_id;
+    values = [category_id];
   } else if (news) {
     sql +=
-      " WHERE category_id=? BETWEEN DATE_SUB(NOW(), INTERVAL 1 MONTH) AND NOW()";
+      " WHERE category_id=? BETWEEN DATE_SUB(NOW(), INTERVAL 12 MONTH) AND NOW()";
     values = news;
   }
-  conn.query(sql, (err, results) => {
+  sql += " LIMIT ? OFFSET ?";
+  values.push(parseInt(limit), parseInt(offset));
+  console.log(`sql : ${sql}`);
+  console.log(`values : ${values}`);
+  conn.query(sql, values, (err, results) => {
     if (err) {
       return res.status(StatusCodes.BAD_REQUEST).end();
     }

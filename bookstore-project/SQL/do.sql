@@ -160,3 +160,10 @@ SELECT cartItems.id, book_id, title, summary, quantity, price \
               On cartItems.book_id = books.id
 
 
+-- # 23APR24 books,
+
+SELECT * FROM books WHERE pub_date BETWEEN DATE_SUB(NOW(), INTERVAL 12 MONTH) AND NOW() LIMIT 4 OFFSET 0;
+SELECT * FROM books WHERE category_id='1' AND pub_date BETWEEN DATE_SUB(NOW(), INTERVAL 12 MONTH) AND NOW() LIMIT 4 OFFSET 0;
+SELECT * FROM books WHERE category_id='1' AND pub_date BETWEEN DATE_SUB(NOW(), INTERVAL 1 MONTH) AND NOW() LIMIT 4 OFFSET 0 
+SELECT * FROM books WHERE category_id=1 AND pub_date BETWEEN DATE_SUB(NOW(), INTERVAL 12 MONTH) AND NOW() LIMIT 4 OFFSET 0
+SELECT * FROM books WHERE category_id=1 AND pub_date BETWEEN DATE_SUB(NOW(), INTERVAL 12 MONTH) AND NOW() LIMIT 4 OFFSET 0

@@ -21,15 +21,16 @@ const addToCart = (req, res) => {
 };
 
 const getCartItems = (req, res) => {
-  const { book_id, quantity, user_id } = req.body;
+  const { user_id, selected } = req.body;
 
-  console.log(book_id, quantity, user_id);
+  console.log(user_id, selected);
 
-  const sql =
-    "SELECT cartItems.id, book_id, title, summary, quantity, price \
-              FROM cartItems LEFT JOIN books \
-              On cartItems.book_id = books.id";
-  const values = [book_id, quantity, user_id];
+  const sql = `SELECT cartItems.id, book_id, title, summary, quantity, price \
+              FROM cartItems 
+              LEFT JOIN books
+              ON cartItems.book_id = books.id
+              WHERE user_id=? AND cartItems.id IN (?)`;
+  const values = [user_id, selected];
 
   conn.query(sql, values, (err, results) => {
     if (err) {
@@ -38,7 +39,7 @@ const getCartItems = (req, res) => {
         .json({ message: "잘못된 요청입니다." });
     }
 
-    return res.status(StatusCodes.CREATED).json(results);
+    return res.status(StatusCodes.OK).json(results);
   });
 };
 
