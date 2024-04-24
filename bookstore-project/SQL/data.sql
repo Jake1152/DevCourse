@@ -66,16 +66,16 @@ SELECT cartItems.id, book_id, title, summary, quantity, price
 FROM cartItems LEFT JOIN books 
 ON cartItems.book_id = books.id;
 
-// 장바구니 아이템 조회
+// 장바구니 아이템 삭제
 DELETE FROM cartItems WHERE id = ?;
 
 // 장바구니에서 선택한(장바구니 도서 id) 아이템 목록 조회 (=선택한 장바구니 상품 목록 조회)
-SELECT * FROM bookstore.cartItems WHERE user_id=1 AND id IN (1,3)
+SELECT * FROM bookstore.cartItems WHERE user_id=1 AND id IN (1,3);
 
 
 // 주문하기
 // 배송 정보 입력
-INSERT INTO delivery (address, receiver, contact) VALUES ("서울시 중구", "김송아", "010-1234-5678");
+INSERT INTO delivery (address, receiver, contact) VALUES ("서울시 도봉구", "임진호", "010-1234-5678");
 const delivery_id = SELECT max(id) FROM delivery;
 
 // 주문 정보 입력
@@ -112,4 +112,16 @@ VALUES (order_id, 1, 1);
 INSERT INTO orderedBook (order_id, book_id, quantity)
 VALUES (order_id, 3, 2);
 
+
+INSERT INTO mytable (id, a, b, c)
+VALUES (1, 'a1', 'b1', 'c1'),
+(2, 'a2', 'b2', 'c2'),
+(3, 'a3', 'b3', 'c3'),
+(4, 'a4', 'b4', 'c4'),
+(5, 'a5', 'b5', 'c5'),
+(6, 'a6', 'b6', 'c6')
+ON DUPLICATE KEY UPDATE id=VALUES(id),
+a=VALUES(a),
+b=VALUES(b),
+c=VALUES(c);
 

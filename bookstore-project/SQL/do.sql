@@ -102,7 +102,7 @@ ALTER TABLE `bookstore`.`cartItems`
 RENAME COLUMN bookId to book_id;
 
 ALTER TABLE `bookstore`.`cartItems`
-RENAME COLUMN count to num;
+RENAME COLUMN num to quantity;
 
 
 ALTER TABLE `bookstore`.`cartItems`
@@ -167,3 +167,39 @@ SELECT * FROM books WHERE category_id='1' AND pub_date BETWEEN DATE_SUB(NOW(), I
 SELECT * FROM books WHERE category_id='1' AND pub_date BETWEEN DATE_SUB(NOW(), INTERVAL 1 MONTH) AND NOW() LIMIT 4 OFFSET 0 
 SELECT * FROM books WHERE category_id=1 AND pub_date BETWEEN DATE_SUB(NOW(), INTERVAL 12 MONTH) AND NOW() LIMIT 4 OFFSET 0
 SELECT * FROM books WHERE category_id=1 AND pub_date BETWEEN DATE_SUB(NOW(), INTERVAL 12 MONTH) AND NOW() LIMIT 4 OFFSET 0
+
+
+-- # 24APR24 cartItems
+
+ALTER TABLE orders RENAME COLUMN total_count to total_quantity;
+
+ALTER TABLE delivery MODIFY id INT(11) NOT NULL;
+
+
+-- 
+ALTER TABLE orders MODIFY column_name column_definition AFTER another_column_name;
+
+
+-- ## null 인것 다른 값으로 대체하여 SELECT하기
+-- case1
+select ifnull(category_id, '123') as category_id 
+from books; 
+
+-- case2
+select coalesce(category_id, 1) as category_id 
+from books; 
+
+-- case3
+select case 
+    when category_id is null then 1 
+    else category_id end as category_id 
+from books; 
+
+-- case4
+select IFNULL(category_id, 1) FROM books;
+
+
+-- ## null 인것 채우기!!
+UPDATE books
+SET category_id=1
+WHERE category_id IS NULL;
