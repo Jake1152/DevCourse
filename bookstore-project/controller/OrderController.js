@@ -1,42 +1,50 @@
 // 임진호
 const { StatusCodes } = require("http-status-codes");
-const conn = require("../mariadb");
+// const conn = require("../mariadb");
+const mariadb = require("mysql2/promise");
+const dotenv = require("dotenv");
+dotenv.config();
 
 const order = async (req, res) => {
+  const conn = await mariadb.createConnection({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    dateStrings: true,
+  });
   const { items, delivery, totalQuantity, totalPrice, userId, firstBookTitle } =
     req.body;
 
-  let delivery_id;
-  let order_id;
-  let sql = "INSERT INTO delivery (address, receiver, con VALUES(?, ?, ?)";
-  let values = [firstBookTitle, totalQuantity, totalPrice, userId, delivery_id];
-  // conn.query(sql, values, (err, results) => {
-  //   if (err) {
-  //     return res
-  //       .status(StatusCodes.BAD_REQUEST)
-  //       .json({ message: "잘못된 요청입니다." });
-  //   }
-  //   return res.status(StatusCodes.CREATED).json(results);
-  // });
+  let sql =
+    "INSERT INTO delivery (address, receiver, contact) VALUES (?, ?, ?)";
+  let values = [delivery.address, delivery.receiver, delivery.contact];
   let [results] = await conn.query(sql, values);
+  let delivery_id = results.insertId;
+  console.log("delivery_id : ", delivery_id);
 
-  delivery_id = results.insertIdl;
-
-  // SELECT book_id, quantity FROM cartItems WHERE IN [1,2,3];
-  // order_id
-
-  sql =
-    "INSERT INTO orders (book_title, total_quantity, total_price, user_id, delivery_id) VALUES (?, ?, ?, ?, ?)";
+  // orders 테이블 삽입
+  sql = `INSERT INTO orders (book_title, total_quantity, total_price, user_id, delivery_id) VALUES (?, ?, ?, ?, ?)`;
 
   values = [firstBookTitle, totalQuantity, totalPrice, userId, delivery_id];
-  conn.query(sql, values, (err, results) => {
-    if (err) {
-      return res
-        .status(StatusCodes.BAD_REQUEST)
-        .json({ message: "잘못된 요청입니다." });
-    }
-    return res.status(StatusCodes.CREATED).json(results);
+
+  [results] = await conn.query(sql, values);
+  let order_id = results.insertId;
+  console.log("order_id : ", order_id);
+
+  // orderedBook 테이블 삽입
+
+  sql = `INSERT INTO orderedBook (order_id, book_id, quantity) VALUES ?`;
+
+  values = [];
+  items.forEach((item) => {
+    values.push([order_id, item.book_id, item.quantity]);
   });
+
+  [results] = await conn.query(sql, [values]);
+  console.log("results : ", results);
+
+  return res.status(StatusCodes.OK).json(results);
 };
 
 const getOrders = (req, res) => {

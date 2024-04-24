@@ -31,7 +31,7 @@ const getCartItems = (req, res) => {
 
   if (authorization instanceof TokenExpiredError) {
     return res.status(StatusCodes.UNAUTHORIZED).json({
-      message: "로그이 세션이 만료되었습니다. 다시 로그인 하세요.",
+      message: "로그인 세션이 만료되었습니다. 다시 로그인 하세요.",
     });
   } else {
     const sql = `SELECT cartItems.id, book_id, title, summary, quantity, price \

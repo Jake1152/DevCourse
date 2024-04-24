@@ -175,7 +175,6 @@ ALTER TABLE orders RENAME COLUMN total_count to total_quantity;
 
 ALTER TABLE delivery MODIFY id INT(11) NOT NULL;
 
-
 -- 
 ALTER TABLE orders MODIFY column_name column_definition AFTER another_column_name;
 
@@ -203,3 +202,60 @@ select IFNULL(category_id, 1) FROM books;
 UPDATE books
 SET category_id=1
 WHERE category_id IS NULL;
+
+
+-- orders 테이블 비우기
+TRUNCATE orders;
+ERROR 1701 (42000): Cannot truncate a table referenced in a foreign key constraint (`bookstore`.`orderedBook`, CONSTRAINT `orderedBook_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `bookstore`.`orders` (`id`))
+
+SET FOREIGN_KEY_CHECKS = 0;
+Query OK, 0 rows affected (0.127 sec)
+
+MariaDB [bookstore]> TRUNCATE TABLE orders;
+Query OK, 0 rows affected (0.129 sec)
+
+
+-- table column 순서 변경
+ALTER TABLE table_name MODIFY column_name column_definition AFTER another_column_name;
+
+ALTER TABLE orders MODIFY book_title varchar(255) AFTER id;
+ALTER TABLE orders MODIFY total_quantity int(11) NOT NULL AFTER book_title;
+ALTER TABLE orders MODIFY total_price decimal(10,2) NOT NULL AFTER total_quantity;
+ALTER TABLE orders MODIFY delivery_id int(11) NOT NULL AFTER created_at;
+ALTER TABLE orders ADD COLUMN user_id int(11) AFTER created_at 
+
+ALTER TABLE orders ADD FOREIGN KEY (user_id) REFERENCES users(id);
+
+| orders | CREATE TABLE `orders` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `book_title` varchar(255) DEFAULT NULL,
+  `total_quantity` int(11) NOT NULL,
+  `total_price` decimal(10,2) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `user_id` int(11) DEFAULT NULL,
+  `delivery_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `delivery_id` (`delivery_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`delivery_id`) REFERENCES `delivery` (`id`),
+  CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci |
+
+MariaDB [bookstore]> DESC orders;
++----------------+---------------+------+-----+---------------------+----------------+
+| Field          | Type          | Null | Key | Default             | Extra          |
++----------------+---------------+------+-----+---------------------+----------------+
+| id             | int(11)       | NO   | PRI | NULL                | auto_increment |
+| book_title     | varchar(255)  | YES  |     | NULL                |                |
+| total_quantity | int(11)       | NO   |     | NULL                |                |
+| total_price    | decimal(10,2) | NO   |     | NULL                |                |
+| created_at     | timestamp     | NO   |     | current_timestamp() |                |
+| user_id        | int(11)       | YES  |     | NULL                |                |
+| delivery_id    | int(11)       | NO   | MUL | NULL                |                |
++----------------+---------------+------+-----+---------------------+----------------+
+7 rows in set (0.001 sec)
+
+
+-- orderedBook
+
+ALTER TABLE orderedBook RENAME COLUMN count to quantity;
