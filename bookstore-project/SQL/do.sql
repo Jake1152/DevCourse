@@ -204,11 +204,13 @@ SET category_id=1
 WHERE category_id IS NULL;
 
 
--- orders 테이블 비우기
+-- ## orders 테이블 비우기
 TRUNCATE orders;
 ERROR 1701 (42000): Cannot truncate a table referenced in a foreign key constraint (`bookstore`.`orderedBook`, CONSTRAINT `orderedBook_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `bookstore`.`orders` (`id`))
 
+-- 외래키 조건 제외
 SET FOREIGN_KEY_CHECKS = 0;
+
 Query OK, 0 rows affected (0.127 sec)
 
 MariaDB [bookstore]> TRUNCATE TABLE orders;
@@ -259,3 +261,18 @@ MariaDB [bookstore]> DESC orders;
 -- orderedBook
 
 ALTER TABLE orderedBook RENAME COLUMN count to quantity;
+
+
+--- table clear 
+
+SET FOREIGN_KEY_CHECKS = 0;
+
+TRUNCATE orderedBook;
+TRUNCATE orders;
+TRUNCATE delivery;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+
+-- cartItem record 추가 
+INSERT INTO cartItems (book_id, quantity, user_id) VALUES (3,1,1), (4,1,1), (8,1,1)

@@ -20,7 +20,7 @@ app.use("/book", books);
 app.use("/category", category);
 app.use("/likes", like);
 app.use("/carts", carts);
-app.use("/order", order);
+app.use("/orders", order);
 
 app.listen(process.env.PORT || port, () => {
   console.log(`Server is started on ${port}`);

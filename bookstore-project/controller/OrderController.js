@@ -16,6 +16,8 @@ const order = async (req, res) => {
   const { items, delivery, totalQuantity, totalPrice, userId, firstBookTitle } =
     req.body;
 
+  let result = await deleteCartItems(conn);
+
   let sql =
     "INSERT INTO delivery (address, receiver, contact) VALUES (?, ?, ?)";
   let values = [delivery.address, delivery.receiver, delivery.contact];
@@ -41,10 +43,10 @@ const order = async (req, res) => {
     values.push([order_id, item.book_id, item.quantity]);
   });
 
-  [results] = await conn.query(sql, [values]);
+  results = await conn.query(sql, [values]);
   console.log("results : ", results);
 
-  return res.status(StatusCodes.OK).json(results);
+  return res.status(StatusCodes.OK).json(results[0]);
 };
 
 const getOrders = (req, res) => {
@@ -53,6 +55,15 @@ const getOrders = (req, res) => {
 
 const getOrderDetail = (req, res) => {
   res.status(StatusCodes.OK).json({ message: "getOrderDetail" });
+};
+
+const deleteCartItems = async (conn) => {
+  const sql = `DELETE FROM cartItems WEHRE id IN (?)`;
+  let values = [1, 2, 3];
+
+  let result = await conn.execute(sql, values);
+  return result;
+  // return res.status(StatusCodes.OK).json(result);
 };
 
 // const addToCart = (req, res) => {
