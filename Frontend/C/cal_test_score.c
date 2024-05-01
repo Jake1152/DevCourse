@@ -23,7 +23,6 @@ int main()
     else if (score < 61)
         grade = 'F';
 
-
     printf("grade : %c\n", grade);
     return 0;
 }
