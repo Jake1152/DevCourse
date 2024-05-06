@@ -94,8 +94,16 @@ const getOrders = async (req, res) => {
   // res.status(StatusCodes.OK).json({ message: "getOrders" });
 };
 
+// const conn = await mariadb.createConnection({
+//   host: process.env.DB_HOST,
+//   user: process.env.DB_USER,
+//   password: process.env.DB_PASSWORD,
+//   database: process.env.DB_NAME,
+//   dateStrings: true,
+// });
+
 const getOrderDetail = async (req, res) => {
-  const { id } = req.params;
+  const orderId = req.params.id;
   const conn = await mariadb.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
@@ -113,61 +121,6 @@ const getOrderDetail = async (req, res) => {
   res.status(StatusCodes.OK).json(rows);
   // res.status(StatusCodes.OK).json({ message: "getOrders" });
 };
-
-// const addToCart = (req, res) => {
-//   const { book_id, quatity, user_id } = req.body;
-
-//   const sql =
-//     "INSERT INTO cartItems (book_id, quantity, user_id VALUES(?, ?, ?)";
-//   const values = [book_id, quatity, user_id];
-
-//   conn.query(sql, values, (err, results) => {
-//     if (err) {
-//       return res
-//         .status(StatusCodes.BAD_REQUEST)
-//         .json({ message: "잘못된 요청입니다." });
-//     }
-
-//     return res.status(StatusCodes.CREATED).json(results);
-//   });
-// };
-
-// const getCartItems = (req, res) => {
-//   const { book_id, quatity, user_id } = req.body;
-
-//   const sql =
-//     "SELECT cartItems.id, book_id, title, summary, quantity, price \
-//               FROM cartItems LEFT JOIN books \
-//               On getCartImtes.book_id = books.id";
-//   const values = [book_id, quatity, user_id];
-
-//   conn.query(sql, values, (err, results) => {
-//     if (err) {
-//       return res
-//         .status(StatusCodes.BAD_REQUEST)
-//         .json({ message: "잘못된 요청입니다." });
-//     }
-
-//     return res.status(StatusCodes.CREATED).json(results);
-//   });
-// };
-
-// // 임진호
-// const removeCartItems = (req, res) => {
-//   const { id } = req.body;
-
-//   const sql = "DELETE FROM cartItems WHERE id = ?";
-
-//   conn.query(sql, id, (err, results) => {
-//     if (err) {
-//       return res
-//         .status(StatusCodes.BAD_REQUEST)
-//         .json({ message: "잘못된 요청입니다." });
-//     }
-
-//     return res.status(StatusCodes.CREATED).json(results);
-//   });
-// };
 
 module.exports = { order, getOrders, getOrderDetail };
 // 임진호
