@@ -1,14 +1,19 @@
-INSERT INTO books (title, form, isbn, summary, detail, author, pages, contents, price, pub_date)
-VALUES ("어린왕자들", "종이책", 0, "어리다..", "많이 어리다..", "김어림", 100, "목차입니다.", 20000, "2019-01-01");
+-- INSERT INTO books (title, form, isbn, summary, detail, author, pages, contents, price, pub_date)
+-- VALUES ("어린왕자들", "종이책", 0, "어리다..", "많이 어리다..", "김어림", 100, "목차입니다.", 20000, "2019-01-01");
 
-INSERT INTO books (title, form, isbn, summary, detail, author, pages, contents, price, pub_date)
-VALUES ("신데렐라들", "종이책", 1, "유리구두..", "투명한 유리구두..", "김구두", 100, "목차입니다.", 20000, "2023-12-01");
+-- INSERT INTO books (title, form, isbn, summary, detail, author, pages, contents, price, pub_date)
+-- VALUES ("신데렐라들", "종이책", 1, "유리구두..", "투명한 유리구두..", "김구두", 100, "목차입니다.", 20000, "2023-12-01");
 
-INSERT INTO books (title, form, isbn, summary, detail, author, pages, contents, price, pub_date)
-VALUES ("백설공주들", "종이책", 2, "사과..", "빨간 사과..", "김사과", 100, "목차입니다.", 20000, "2023-11-01");
+-- INSERT INTO books (title, form, isbn, summary, detail, author, pages, contents, price, pub_date)
+-- VALUES ("백설공주들", "종이책", 2, "사과..", "빨간 사과..", "김사과", 100, "목차입니다.", 20000, "2023-11-01");
 
-INSERT INTO books (title, form, isbn, summary, detail, author, pages, contents, price, pub_date)
-VALUES ("흥부와 놀부들", "종이책", 3, "제비..", "까만 제비..", "김제비", 100, "목차입니다.", 20000, "2023-12-08");
+-- INSERT INTO books (title, form, isbn, summary, detail, author, pages, contents, price, pub_date)
+-- VALUES ("흥부와 놀부들", "종이책", 3, "제비..", "까만 제비..", "김제비", 100, "목차입니다.", 20000, "2023-12-08");
+
+INSERT INTO category (id, name) VALUES
+(0, '소설'),
+(1, '자기계발'),
+(2, '역사');
 
 INSERT INTO books (title, img, category_id, form, isbn, summary, detail, author, pages, contents, price, pub_date)
 VALUES ("콩쥐 팥쥐", 4, 0, "ebook", 4, "콩팥..", "콩심은데 콩나고..", "김콩팥", 100, "목차입니다.", 20000, "2023-12-07");
@@ -36,6 +41,12 @@ JOIN category ON books.category_id = category.id;
 
 SELECT * FROM books LEFT JOIN category ON books.category_id = category.id WHERE books.id=1;
 
+// user 추가
+INSERT INTO users (email, password) VALUES ("test0@gmail.com", "pwd1234");
+INSERT INTO users (email, password) VALUES ("test1@gmail.com", "pwd1234");
+INSERT INTO users (email, password) VALUES ("test2@gmail.com", "pwd1234");
+INSERT INTO users (email, password) VALUES ("test3@gmail.com", "pwd1234545");
+INSERT INTO users (email, password) VALUES ("test4@gmail.com", "password");
 
 // 좋아요 추가
 INSERT INTO likes (user_id, liked_book_id) VALUES (1, 1);
@@ -65,7 +76,7 @@ DELETE FROM cartItems WHERE id = ?;
 
 // 장바구니에서 선택한(장바구니 도서 id) 아이템 목록 조회 (=선택한 장바구니 상품 목록 조회)
 SELECT * FROM Bookshop.cartItems WHERE user_id=1 AND id IN (1,3)
-
+SELECT * FROM bookstop_test.cartItems WHERE user_id=1 AND id IN (1,3)
 
 // 주문하기
 // 배송 정보 입력
@@ -77,14 +88,19 @@ INSERT INTO orders (book_title, total_quantity, total_price, user_id, delivery_i
 VALUES ("어린왕자들", 3, 60000, 1, delivery_id);
 const order_id = SELECT max(id) FROM orders;
 
+// raw
+INSERT INTO orders (book_title, total_quantity, total_price, user_id, delivery_id) 
+VALUES ("어린왕자들", 3, 60000, 1, 1);
+
 // 주문 상세 목록 입력
 INSERT INTO orderedBook (order_id, book_id, quantity)
-VALUES (order_id, 1, 1);
+VALUES (2, 1, 1);
 INSERT INTO orderedBook (order_id, book_id, quantity)
-VALUES (order_id, 3, 2);
+VALUES (4, 3, 2);
 
 
-SELECT max(id) FROM Bookshop.orderedBook;
+-- SELECT max(id) FROM Bookshop.orderedBook;
+SELECT max(id) FROM orderedBook;
 SELECT last_insert_id();
 
 // 결제된 도서 장바구니 삭제
