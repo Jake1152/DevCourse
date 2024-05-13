@@ -8,7 +8,7 @@ let completed: boolean = false;
 interface Student {
   stdId: number;
   stdName: string;
-  age: number;
+  age?: number;
   gender: string;
   course: string;
   completed: boolean;
@@ -18,7 +18,7 @@ function getInfo(id: number): Student {
   return {
     stdId: id,
     stdName: "string",
-    age: 42,
+    // age: 42,
     gender: "string",
     course: "string",
     completed: true,
