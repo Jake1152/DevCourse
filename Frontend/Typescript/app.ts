@@ -5,13 +5,15 @@ let gender: string = "male";
 let course: string = "Typescript";
 let completed: boolean = false;
 
-function getInfo(id: number): {
+interface Student {
   stdId: number;
   stdName: string;
   age: number;
   gender: string;
   course: string;
   completed: boolean;
-} {
+}
+
+function getInfo(id: number): Student {
   return null;
 }

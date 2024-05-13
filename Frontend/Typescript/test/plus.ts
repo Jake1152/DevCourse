@@ -3,3 +3,4 @@ function plus(a: number, b: number) {
 }
 
 console.log(plus("3","5"));
+//console.log(plus(3, 5));
