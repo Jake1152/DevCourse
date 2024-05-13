@@ -9,9 +9,11 @@ interface Student {
   stdId: number;
   stdName: string;
   age?: number;
-  gender: string;
-  course: string;
-  completed: boolean;
+  gender?: "male" | "female";
+  course?: string;
+  completed?: boolean;
+  setName?: (name: string) => void;
+  getName?: () => string;
 }
 
 function getInfo(id: number): Student {
@@ -19,7 +21,7 @@ function getInfo(id: number): Student {
     stdId: id,
     stdName: "string",
     // age: 42,
-    gender: "string",
+    gender: "male",
     course: "string",
     completed: true,
   };
@@ -27,3 +29,26 @@ function getInfo(id: number): Student {
 
 const result: Student = getInfo(1);
 console.log(result);
+
+/**
+ * Literal type
+ * 특정값의 요소만을 나타냄
+ * 해당 값의 집합의 요소 중에 하나의 요소로 타입을 지정한다.
+ */
+class MyStudent implements Student {
+  stdId = 91011;
+  stdName = "Jin";
+  age = 31;
+  gender: "male" | "female"; // male 또는 female만 들어온다. , 두개의 값이 이외의 값이 들어올 떄 에러가 난다.
+  course = "node.js";
+  completed = true;
+}
+
+// 객체 타입 지정
+const user: { name: string; age: number } = {
+  name: "john",
+  age: 25,
+  //   age: "25",
+};
+
+console.log("user : ", user);
