@@ -15,5 +15,15 @@ interface Student {
 }
 
 function getInfo(id: number): Student {
-  return null;
+  return {
+    stdId: id,
+    stdName: "string",
+    age: 42,
+    gender: "string",
+    course: "string",
+    completed: true,
+  };
 }
+
+const result: Student = getInfo(1);
+console.log(result);
