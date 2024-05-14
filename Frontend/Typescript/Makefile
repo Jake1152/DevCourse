@@ -1,16 +1,16 @@
-NAME = app.js
+NAME = app
 
 all: ts
-	node $(NAME)
+	node $(NAME).js
 
 ts:
-	tsc app.ts
+	tsc $(NAME).ts
 
 clean:
-	rm $(NAME)
+	rm $(NAME).js
 
 fclean:
-	rm -f $(NAME)
+	rm -f $(NAME).js
 
 re:
 	make fclean
