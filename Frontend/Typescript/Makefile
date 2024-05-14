@@ -2,10 +2,16 @@ NAME = app.js
 
 all: ts
 	node $(NAME)
+
 ts:
 	tsc app.ts
 
 clean:
-	rm app.js
+	rm $(NAME)
 
-fclean: clean
+fclean:
+	rm -f $(NAME)
+
+re:
+	make fclean
+	make all
