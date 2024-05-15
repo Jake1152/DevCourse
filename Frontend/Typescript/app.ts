@@ -158,29 +158,55 @@
 
 // # Array union type
 
-type numOrStr = number | string;
-// array with union type
-let mixedArray: (number | string)[] = [1, "two", 3, "four"];
-let mixedArray_with_type_alias: numOrStr[] = [1, "two", 3, "four"];
+// type numOrStr = number | string;
+// // array with union type
+// let mixedArray: (number | string)[] = [1, "two", 3, "four"];
+// let mixedArray_with_type_alias: numOrStr[] = [1, "two", 3, "four"];
 
-for (const element of mixedArray) {
-  console.log(`element : ${element}`);
-}
-console.log();
-
-// for (const element of mixedArray_with_type_alias) {
-//   console.log(`element : ${element}`);
+// for (const element of mixedArray) {
+//   console.log(`mixedArray's element : ${element}`);
 // }
-console.log();
+// console.log();
 
-let infer = [1, 2, 3]; // type inference
-for (const element of infer) {
-  console.log(`element : ${element}`);
+// // for (const element of mixedArray_with_type_alias) {
+// //   console.log(`mixedArray_with_type_alias's element : ${element}`);
+// // }
+// console.log();
+
+// let infer = [1, 2, 3]; // type inference
+// for (const element of infer) {
+//   console.log(`type inferencing array's element : ${element}`);
+// }
+// console.log();
+
+// let readOnlyArray: ReadonlyArray<number> = [4, 5, 6];
+// for (const element of readOnlyArray) {
+//   console.log(`readonly array's element : ${element}`);
+// }
+// console.log();
+
+// // # tuple : 타입의 순서가 정해져 있다.
+// let greeting: [number, string, boolean] = [1, "hello", true];
+// for (const element of greeting) {
+//   console.log(`tuple element : ${element}`);
+// }
+// console.log();
+
+// # Spread 연산자
+let firstArray = [1, 2, 3];
+let secondArray = [4, 5, 6];
+
+// firstAray + secondArray; // error
+
+const mergedArray = [firstArray, secondArray];
+for (const element of mergedArray) {
+  console.log(`tuple element : ${element}`);
 }
 console.log();
 
-let readOnlyArray: ReadonlyArray<number> = [4, 5, 6];
-for (const element of readOnlyArray) {
-  console.log(`element : ${element}`);
+// Spread 연산자 적용
+const mergedArrayUsingSpread = [...firstArray, ...secondArray];
+for (const element of mergedArrayUsingSpread) {
+  console.log(`tuple element : ${element}`);
 }
 console.log();
