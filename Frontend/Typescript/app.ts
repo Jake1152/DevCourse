@@ -139,18 +139,48 @@
 /**
  * # Array, Tuple
  */
+// # Array
 // 둘이 같다
-let numbers_with_new_keyword = new Array([1, 2, 3, 4, 5]);
-let numbers_without_type_explicitation = [1, 2, 3, 4, 5];
+// let numbers_with_new_keyword = new Array([1, 2, 3, 4, 5]);
+// let numbers_without_type_explicitation = [1, 2, 3, 4, 5];
 
-let numbers: number[] = [1, 2, 3, 4, 5];
+// let numbers: number[] = [1, 2, 3, 4, 5];
 
-let fruites: string[] = ["apple", "tomato", "peach"];
+// let fruites: string[] = ["apple", "tomato", "peach"];
 
-for (let i = 0; i < numbers.length; i++) {
-  console.log(numbers[i]);
+// for (let i = 0; i < numbers.length; i++) {
+//   console.log(numbers[i]);
+// }
+
+// for (let i = 0; i < fruites.length; i++) {
+//   console.log(fruites[i]);
+// }
+
+// # Array union type
+
+type numOrStr = number | string;
+// array with union type
+let mixedArray: (number | string)[] = [1, "two", 3, "four"];
+let mixedArray_with_type_alias: numOrStr[] = [1, "two", 3, "four"];
+
+for (const element of mixedArray) {
+  console.log(`element : ${element}`);
 }
+console.log();
 
-for (let i = 0; i < fruites.length; i++) {
-  console.log(fruites[i]);
+// for (const element of mixedArray_with_type_alias) {
+//   console.log(`element : ${element}`);
+// }
+console.log();
+
+let infer = [1, 2, 3]; // type inference
+for (const element of infer) {
+  console.log(`element : ${element}`);
 }
+console.log();
+
+let readOnlyArray: ReadonlyArray<number> = [4, 5, 6];
+for (const element of readOnlyArray) {
+  console.log(`element : ${element}`);
+}
+console.log();
