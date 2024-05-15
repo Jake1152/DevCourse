@@ -99,7 +99,35 @@ direction = "North"; // 유효
 const user: { name: string; age: number } = {
   name: "john",
   age: 25,
-  //   age: "25",
 };
 
 console.log("user : ", user);
+
+/**
+ * # Union, type aliac, type guard
+ */
+// type check
+// let anyVal = 100;
+// let anyVal: string = 100;
+// anyVal = 200;
+
+// type aliac
+type stOrNum = number | string;
+
+// Union
+let numStr: number | string = 100;
+// numStr = "Jin";
+
+function convertToString(val: number | string): string {
+  return String(val);
+}
+
+function convertToNumber(val: number | string): number {
+  return Number(val);
+}
+
+let myStr = convertToString(numStr);
+console.log(`myStr : ${myStr}`);
+
+let myNum = convertToNumber(numStr);
+console.log(`myNum : ${myNum}`);

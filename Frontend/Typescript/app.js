@@ -74,3 +74,23 @@ var user = {
     age: 25
 };
 console.log("user : ", user);
+/**
+ * # Union, type aliac, type guard
+ */
+// type check
+// let anyVal = 100;
+// let anyVal: string = 100;
+// anyVal = 200;
+// Union
+var numStr = 100;
+// numStr = "Jin";
+function convertToString(val) {
+    return String(val);
+}
+function convertToNumber(val) {
+    return Number(val);
+}
+var myStr = convertToString(numStr);
+console.log("myStr : ".concat(myStr));
+var myNum = convertToNumber(numStr);
+console.log("myNum : ".concat(myNum));
