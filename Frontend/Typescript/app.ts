@@ -111,23 +111,23 @@ console.log("user : ", user);
 // let anyVal: string = 100;
 // anyVal = 200;
 
-// type aliac
+// type alias
 type stOrNum = number | string;
 
 // Union
-let numStr: number | string = 100;
+let numStr: stOrNum = 100;
 // numStr = "Jin";
 
-function convertToString(val: number | string): string {
+function convertToString(val: stOrNum): string {
   return String(val);
 }
 
-function convertToNumber(val: number | string): number {
+function convertToNumber(val: stOrNum): number {
   return Number(val);
 }
 
 let myStr = convertToString(numStr);
-console.log(`myStr : ${myStr}`);
+console.log(`myStr : ${myStr},\t typeof myStr : ${typeof myStr}`);
 
 let myNum = convertToNumber(numStr);
-console.log(`myNum : ${myNum}`);
+console.log(`myNum : ${myNum},\t typeof myNum : ${typeof myNum}`);
