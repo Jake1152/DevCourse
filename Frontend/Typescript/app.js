@@ -76,8 +76,9 @@ var user = {
 console.log("user : ", user);
 // Union
 var numStr = 100;
-// numStr = "Jin";
+var item;
 function convertToString(val) {
+    item = numStr;
     return String(val);
 }
 function convertToNumber(val) {

@@ -116,9 +116,13 @@ type stOrNum = number | string;
 
 // Union
 let numStr: stOrNum = 100;
-// numStr = "Jin";
+let item: number;
 
 function convertToString(val: stOrNum): string {
+  // 큰 범위에서 작은 범위에 대입할 때는 문제가 된다.
+  // item은  number만 받는데 numStr은 number, string 둘 다 가지고 있기 때문이다.
+  if (typeof val === "string") item = 0;
+  else item = val;
   return String(val);
 }
 
