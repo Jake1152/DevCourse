@@ -1,6 +1,8 @@
 import React from "react";
-import logo from "./logo.svg";
+// import logo from "./logo.svg";
 import "./App.css";
+import ClassCom from "./ClassCom";
+import FunctCom from "./FuncCom";
 
 function App() {
   let name = "리액트";
