@@ -1,19 +1,15 @@
 import React from "react";
 // import logo from "./logo.svg";
 import "./App.css";
-import ClassCom from "./ClassCom";
-import FunctCom from "./FuncCom";
+// import ClassCom from "./ClassCom";
+// import FunctCom from "./FuncCom";
+import TodoList from "./Todolist";
 
 function App() {
   let name = "리액트";
   return (
     <div className="container">
-      <h1 className="test">
-        Hello, React
-        {name === "리액트" ? <h1>YES</h1> : null}
-        !!
-      </h1>
-      <p> Welcome</p>
+      <TodoList></TodoList>
     </div>
   );
 }
