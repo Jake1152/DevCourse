@@ -1,6 +1,10 @@
-import React from "react";
+import React, { FC } from "react";
 
-const BoardList = () => {
+type TBoardListProps = {
+  activeBoardId: string;
+};
+
+const BoardList: FC<> = ({ activeBoardId, setActiveBoardId }) => {
   return <div>BoardList</div>;
 };
 
