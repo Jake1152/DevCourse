@@ -1,25 +1,8 @@
-import { ThemeName } from "../../style/theme";
+import { useContext } from "react";
+import { ThemeContext } from "../../context/themeContext";
 
-/**
- * toggle기능 추가
- * light, dark
- */
-
-interface Props {
-  themeName: ThemeName;
-  setThemeName: (themeName: ThemeName) => void;
-}
-
-function ThemeSwitcher({ themeName, setThemeName }: Props) {
-  // const toggleTheme = () => {
-  //   if (themeName === "light") {
-  //     setThemeName("dark");
-  //     return;
-  //   }
-  // };
-  const toggleTheme = () => {
-    setThemeName(themeName === "light" ? "dark" : "light");
-  };
+function ThemeSwitcher() {
+  const { themeName, toggleTheme } = useContext(ThemeContext);
 
   return <button onClick={toggleTheme}>{themeName}</button>;
 }

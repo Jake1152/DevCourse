@@ -3,10 +3,14 @@
  */
 import { createContext } from "react";
 import { ThemeName } from "../style/theme";
+import { useState } from "react";
+import { GlobalStyle } from "../style/global";
+import { ThemeProvider } from "styled-components";
+import { getTheme } from "../style/theme";
 
 interface State {
   themeName: ThemeName;
-  setThemeName: (themeName: ThemeName) => {};
+  toggleTheme: () => {};
 }
 
 /**
@@ -15,7 +19,7 @@ interface State {
 
 export const state = {
   themeName: "light" as ThemeName,
-  setThemeName: (themeName: ThemeName) => {},
+  toggleTheme: () => {},
 };
 
 // export const ThemeContext = createContext<ThemeName>("light");
@@ -32,7 +36,23 @@ export const BookStoreThemeProvider = ({
 }: {
   chidren: ReactNode;
 }) => {
+  const [themeName, setThemeName] = useState<State>(state);
+
+  const toggleTheme = () => {
+    setThemeName(themeName === "light" ? "dark" : "light");
+  };
+
   return (
-    <ThemeContext.Provider value={state}>{children}</ThemeContext.Provider>
+    <ThemeContext.Provider value={{ themeName, toggleTheme }}>
+      <ThemeProvider theme={getTheme(themeName)}>
+        <GlobalStyle themeName={themeName} />
+        {children}
+      </ThemeProvider>
+    </ThemeContext.Provider>
   );
 };
+
+/**
+ * 기존에 스타일 컴포넌트로 만든 ThemeProvider와 Global 테마 역시 타마의 한 부분
+ * App.tsx에서 이쪽으로 옮긴다.
+ */

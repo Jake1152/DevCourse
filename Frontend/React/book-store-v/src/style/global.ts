@@ -13,6 +13,9 @@ interface Props {
   themeName: ThemeName;
 }
 
+/**
+ * TODO: createGlobalStyle<Props> 동작 방식, 왜 이렇게 만들어졌는가?
+ */
 export const GlobalStyle = createGlobalStyle<Props>`
     body {
         padding: 0;
