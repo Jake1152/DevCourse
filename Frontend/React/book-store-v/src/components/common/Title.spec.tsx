@@ -1,4 +1,3 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom"; // toHaveStyle, toBeInTheDocument matcher를 사용하기 위해 추가
 import Title from "./Title";
@@ -36,7 +35,7 @@ describe("Title 컴포넌트 테스트", () => {
 });
 
 /**
-import React from "react";
+
 import { render, screen } from "@testing-library/react";
 import Title from "./Title";
 import { BookStoreThemeProvider } from "../../context/themeContext";

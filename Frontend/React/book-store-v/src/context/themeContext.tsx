@@ -2,7 +2,7 @@
  * tsx로 생성하는 이유는 추후에 provider를 옮겨올 예정이라서 그러하다.
  */
 // import { createContext, useEffect } from "react";
-import React, { ReactNode, createContext, useState, useEffect } from "react";
+import { ReactNode, createContext, useState, useEffect } from "react";
 import { ThemeName } from "../style/theme";
 import { GlobalStyle } from "../style/global";
 import { ThemeProvider } from "styled-components";
