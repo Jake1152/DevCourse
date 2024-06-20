@@ -1,24 +1,26 @@
 /**
  * tsx로 생성하는 이유는 추후에 provider를 옮겨올 예정이라서 그러하다.
  */
-import { createContext } from "react";
+import { createContext, useEffect } from "react";
 import { ThemeName } from "../style/theme";
 import { useState } from "react";
 import { GlobalStyle } from "../style/global";
 import { ThemeProvider } from "styled-components";
 import { getTheme } from "../style/theme";
 
+const DEFAULT_THEME_NAME = "dark";
+const THEME_LOCAL_STORAGE_KEY = "book_store_theme";
+
 interface State {
   themeName: ThemeName;
-  toggleTheme: () => {};
+  toggleTheme: () => void;
 }
 
 /**
  * 테마 초기값을 변경하는 방법
  */
-
 export const state = {
-  themeName: "light" as ThemeName,
+  themeName: DEFAULT_THEME_NAME as ThemeName,
   toggleTheme: () => {},
 };
 
@@ -36,11 +38,24 @@ export const BookStoreThemeProvider = ({
 }: {
   chidren: ReactNode;
 }) => {
-  const [themeName, setThemeName] = useState<State>(state);
+  const [themeName, setThemeName] = useState<ThemeName>(DEFAULT_THEME_NAME);
 
   const toggleTheme = () => {
     setThemeName(themeName === "light" ? "dark" : "light");
+    localStorage.setItem(
+      THEME_LOCAL_STORAGE_KEY,
+      themeName === "light" ? "dark" : "light"
+    );
   };
+
+  // 기본값 받아오기
+  useEffect(() => {
+    const savedThemeName = localStorage.getItem(
+      THEME_LOCAL_STORAGE_KEY
+    ) as ThemeName;
+
+    setThemeName(savedThemeName || DEFAULT_THEME_NAME);
+  }, []);
 
   return (
     <ThemeContext.Provider value={{ themeName, toggleTheme }}>

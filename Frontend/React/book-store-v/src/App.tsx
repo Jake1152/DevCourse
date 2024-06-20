@@ -7,16 +7,9 @@ import { useContext, useState } from "react";
 import { BookStoreThemeProvider, ThemeContext } from "./context/themeContext";
 
 function App() {
-  // return <Layout children={<Home />} />;
-  // 지역상태 스타일의 테마
-  // const [themeName, setThemeName] = useState<ThemeName>("light");
-
-  //전역 상태 스타일의 테마
-  const { themeName, toggleTheme } = useContext(ThemeContext);
-
   return (
     <BookStoreThemeProvider>
-      <ThemeSwitcher themeName={themeName} toggleTheme={() => {}} />
+      <ThemeSwitcher />
       <Layout>
         <Home />
       </Layout>
