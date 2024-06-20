@@ -1,9 +1,9 @@
 /**
  * tsx로 생성하는 이유는 추후에 provider를 옮겨올 예정이라서 그러하다.
  */
-import { createContext, useEffect } from "react";
+// import { createContext, useEffect } from "react";
+import React, { ReactNode, createContext, useState, useEffect } from "react";
 import { ThemeName } from "../style/theme";
-import { useState } from "react";
 import { GlobalStyle } from "../style/global";
 import { ThemeProvider } from "styled-components";
 import { getTheme } from "../style/theme";
@@ -36,7 +36,7 @@ export const ThemeContext = createContext<State>(state);
 export const BookStoreThemeProvider = ({
   children,
 }: {
-  chidren: ReactNode;
+  children: ReactNode;
 }) => {
   const [themeName, setThemeName] = useState<ThemeName>(DEFAULT_THEME_NAME);
 
