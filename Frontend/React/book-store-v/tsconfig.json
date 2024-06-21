@@ -20,6 +20,27 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  // "include": ["src"],
+  "include": ["src", "**/*.tsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
+
+// # for jest TEST
+// {
+//   "compilerOptions": {
+//     "target": "ES6",
+//     "module": "commonjs",
+//     "jsx": "react",
+//     "esModuleInterop": true,
+//     "allowSyntheticDefaultImports": true,
+//     "strict": true,
+//     "skipLibCheck": true,
+//     "forceConsistentCasingInFileNames": true,
+//     "baseUrl": "./",
+//     "paths": {
+//       "@/*": ["src/*"]
+//     }
+//   },
+//   "include": ["src"],
+//   "exclude": ["node_modules", "**/*.spec.ts"]
+// }
